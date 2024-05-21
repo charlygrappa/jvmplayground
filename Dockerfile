@@ -13,12 +13,21 @@ RUN apt update && \
     lsof \
     inetutils-ping \
     curl \
-    sysstat
+    sysstat \
+    graphviz \
+    unzip \
+    autoconf
 
 RUN cd ~ && \
     git clone https://github.com/jvm-profiling-tools/async-profiler && \
     cd /root/async-profiler && \
     make
+
+RUN cd ~ && \
+   git clone https://github.com/jemalloc/jemalloc.git && \
+   cd /root/jemalloc && \
+   autoconf && ./configure --enable-stats --enable-prof && \
+   make && make install
 
 ENV PATH="${PATH}:/root/async-profiler/build/bin:/root/proj"
 
